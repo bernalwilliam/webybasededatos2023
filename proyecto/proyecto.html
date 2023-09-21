@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego del Gato</title>
+    <!-- Agrega enlaces a los estilos de Bootstrap -->
+    <link rel="stylesheet" href="css/bootstrap.css">
+     <script src="jquery-3.7.1.js"></script>
+      <style>
+        .cell {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            border: 1px solid #000;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container text-center">
+        <h1>Juego del Gato</h1>
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <div class="row">
+                    <!-- Las celdas se crearán dinámicamente con JavaScript -->
+                </div>
+            </div>
+        </div>
+        <p id="status">Turno del jugador X</p>
+    </div>
+
+    <script>
+        const board = document.querySelector('.row');
+        const status = document.getElementById('status');
+        let currentPlayer = 'X';
+        const cells = new Array(9).fill(null);
+
+        function handleCellClick(index) {
+            if (cells[index] || checkWinner()) {
+                return;
+            }
+
+            cells[index] = currentPlayer;
+            renderBoard();
+            const winner = checkWinner();
+
+            if (winner) {
+                status.textContent = `¡Jugador ${winner} ha ganado!`;
+            } else {
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                status.textContent = `Turno del jugador ${currentPlayer}`;
+            }
+        }
+
+        function checkWinner() {
+            const winningCombinations = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6],
+            ];
+
+            for (const combination of winningCombinations) {
+                const [a, b, c] = combination;
+                if (cells[a] && cells[a] === cells[b] && cells[a] === cells[c]) {
+                    return cells[a];
+                }
+            }
+
+            if (cells.every((cell) => cell)) {
+                return 'Empate';
+            }
+
+            return null;
+        }
+
+        function renderBoard() {
+            board.innerHTML = '';
+            cells.forEach((cell, index) => {
+                const cellElement = document.createElement('div');
+                cellElement.classList.add('col-4', 'cell', 'border');
+                cellElement.textContent = cell;
+                cellElement.addEventListener('click', () => handleCellClick(index));
+                board.appendChild(cellElement);
+            });
+        }
+
+        renderBoard();
+    </script>
+</body>
+</html>

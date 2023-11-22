@@ -22,7 +22,7 @@
                         <label for="semestre">Semestre</label>
                         <input type="number" class="form-control" name="semestre" placeholder="Teclea el semestre">
                     </div>
-                    <div class="form-control">
+                    <div class="form-control"><br>
                         <select name="especialidad" class="form-control">
                             <option value="">Seleccione una especialidad</option>
                             <option value="PROGRAMACION">PROGRAMACION</option>
